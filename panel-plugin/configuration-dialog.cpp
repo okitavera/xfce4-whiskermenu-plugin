@@ -322,6 +322,15 @@ void ConfigurationDialog::toggle_display_recent(GtkToggleButton* button)
 
 //-----------------------------------------------------------------------------
 
+void ConfigurationDialog::toggle_profile_layout_alternate(GtkToggleButton* button)
+{
+	wm_settings->profile_layout_alternate = gtk_toggle_button_get_active(button);
+	wm_settings->set_modified();
+	m_plugin->reload();
+}
+
+//-----------------------------------------------------------------------------
+
 void ConfigurationDialog::background_opacity_changed(GtkRange* range)
 {
 	wm_settings->menu_opacity = gtk_range_get_value(range);
@@ -782,6 +791,20 @@ GtkWidget* ConfigurationDialog::init_behavior_tab()
 	gtk_box_pack_start(command_vbox, m_confirm_session_command, true, true, 0);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(m_confirm_session_command), wm_settings->confirm_session_command);
 	g_signal_connect_slot(m_confirm_session_command, "toggled", &ConfigurationDialog::toggle_confirm_session_command, this);
+
+	// Create profile section
+	GtkGrid* profile_table = GTK_GRID(gtk_grid_new());
+	gtk_grid_set_column_spacing(profile_table, 12);
+	gtk_grid_set_row_spacing(profile_table, 6);
+
+	GtkWidget* profile_frame = make_aligned_frame(_("Profile"), GTK_WIDGET(profile_table));
+	gtk_box_pack_start(page, profile_frame, false, false, 0);
+
+	// Add option to switch layout
+	m_profile_layout_alternate = gtk_check_button_new_with_mnemonic(_("Experimental Profile Layout"));
+	gtk_grid_attach(profile_table, m_profile_layout_alternate, 0, 0, 2, 1);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(m_profile_layout_alternate), wm_settings->profile_layout_alternate);
+	g_signal_connect_slot(m_profile_layout_alternate, "toggled", &ConfigurationDialog::toggle_profile_layout_alternate, this);
 
 	return GTK_WIDGET(page);
 }

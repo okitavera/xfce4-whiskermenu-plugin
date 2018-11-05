@@ -648,6 +648,50 @@ void WhiskerMenu::Window::show(const Position position)
 		}
 	}
 
+	g_object_ref(m_profilepic->get_widget());
+	g_object_ref(m_username);
+
+	if (wm_settings->profile_layout_alternate)
+	{
+		gtk_container_remove(GTK_CONTAINER(m_title_box), GTK_WIDGET(m_profilepic->get_widget()));
+		gtk_container_remove(GTK_CONTAINER(m_title_box), GTK_WIDGET(m_username));
+		if (wm_settings->position_commands_alternate)
+		{
+			gtk_box_set_child_packing(m_title_box, GTK_WIDGET(m_resizer->get_widget()), true, true, 0, GTK_PACK_END);
+		}
+		else
+		{
+			gtk_box_set_child_packing(m_title_box, GTK_WIDGET(m_resizer->get_widget()), false, false, 0, GTK_PACK_END);
+		}
+
+		gtk_box_pack_start(m_sidebar_buttons, GTK_WIDGET(m_profilepic->get_widget()), false, false, 5);
+		gtk_box_pack_start(m_sidebar_buttons, GTK_WIDGET(m_username), false, false, 5);
+
+		gtk_widget_set_halign(GTK_WIDGET(m_profilepic->get_widget()), GTK_ALIGN_CENTER);
+		gtk_widget_set_halign(GTK_WIDGET(m_username), GTK_ALIGN_CENTER);
+
+		gtk_box_reorder_child(m_sidebar_buttons, GTK_WIDGET(m_profilepic->get_widget()), 0);
+		gtk_box_reorder_child(m_sidebar_buttons, GTK_WIDGET(m_username), 1);
+	}
+	else
+	{
+		gtk_container_remove(GTK_CONTAINER(m_sidebar_buttons), GTK_WIDGET(m_profilepic->get_widget()));
+		gtk_container_remove(GTK_CONTAINER(m_sidebar_buttons), GTK_WIDGET(m_username));
+
+		gtk_box_pack_start(m_title_box, GTK_WIDGET(m_profilepic->get_widget()), false, false, 0);
+		gtk_box_pack_start(m_title_box, GTK_WIDGET(m_username), true, true, 0);
+
+		gtk_widget_set_halign(GTK_WIDGET(m_profilepic->get_widget()), GTK_ALIGN_START);
+		gtk_widget_set_halign(GTK_WIDGET(m_username), GTK_ALIGN_START);
+
+		gtk_box_reorder_child(m_title_box, GTK_WIDGET(m_profilepic->get_widget()), 0);
+		gtk_box_reorder_child(m_title_box, GTK_WIDGET(m_username), 1);
+		gtk_box_reorder_child(m_title_box, GTK_WIDGET(m_commands_box), 2);
+		gtk_box_reorder_child(m_title_box, GTK_WIDGET(m_resizer->get_widget()), 3);
+	}
+	g_object_unref(m_profilepic->get_widget());
+	g_object_unref(m_username);
+
 	// Make sure recent button is only visible when tracked
 	gtk_widget_set_visible(GTK_WIDGET(m_recent_button->get_button()), wm_settings->recent_items_max);
 

@@ -69,9 +69,10 @@ void ProfilePicture::on_file_changed(GFileMonitor*, GFile* file, GFile*, GFileMo
 {
 	if (g_file_query_exists(file, NULL))
 	{
-		GIcon* icon = g_file_icon_new(file);
-		gtk_image_set_from_gicon(GTK_IMAGE(m_image), icon, GTK_ICON_SIZE_DND);
-		g_object_unref(icon);
+		gchar* icon = g_file_get_path(file);
+		GdkPixbuf* iconbuf = gdk_pixbuf_new_from_file_at_size(icon, 64, 64, NULL);
+		gtk_image_set_from_pixbuf(GTK_IMAGE(m_image), iconbuf);
+		g_object_unref(iconbuf);
 	}
 	else
 	{

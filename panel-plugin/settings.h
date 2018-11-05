@@ -85,6 +85,8 @@ public:
 	bool position_categories_alternate;
 	bool stay_on_focus_out;
 
+	bool profile_layout_alternate;
+
 	enum Commands
 	{
 		CommandSettings = 0,

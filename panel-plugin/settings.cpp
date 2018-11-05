@@ -117,7 +117,8 @@ Settings::Settings() :
 
 	menu_width(400),
 	menu_height(500),
-	menu_opacity(100)
+	menu_opacity(100),
+	profile_layout_alternate(false)
 {
 	favorites.push_back("exo-terminal-emulator.desktop");
 	favorites.push_back("exo-file-manager.desktop");
@@ -255,6 +256,8 @@ void Settings::load(char* file)
 	menu_height = std::max(10, xfce_rc_read_int_entry(rc, "menu-height", menu_height));
 	menu_opacity = std::min(100, std::max(0, xfce_rc_read_int_entry(rc, "menu-opacity", menu_height)));
 
+	profile_layout_alternate = xfce_rc_read_bool_entry(rc, "profile-layout-alternate", profile_layout_alternate);
+
 	for (int i = 0; i < CountCommands; ++i)
 	{
 		command[i]->set(xfce_rc_read_entry(rc, settings_command[i][0], command[i]->get()));
@@ -355,6 +358,8 @@ void Settings::save(char* file)
 	xfce_rc_write_int_entry(rc, "menu-width", menu_width);
 	xfce_rc_write_int_entry(rc, "menu-height", menu_height);
 	xfce_rc_write_int_entry(rc, "menu-opacity", menu_opacity);
+
+	xfce_rc_write_bool_entry(rc, "profile-layout-alternate", profile_layout_alternate);
 
 	for (int i = 0; i < CountCommands; ++i)
 	{
