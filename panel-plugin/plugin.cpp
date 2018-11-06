@@ -91,7 +91,8 @@ Plugin::Plugin(XfcePanelPlugin* plugin) :
 	m_plugin(plugin),
 	m_window(NULL),
 	m_opacity(100),
-	m_file_icon(false)
+	m_file_icon(false),
+	m_profile_photo_size(72)
 {
 	// Load settings
 	wm_settings = new Settings;
@@ -103,6 +104,7 @@ Plugin::Plugin(XfcePanelPlugin* plugin) :
 	wm_settings->load(xfce_resource_lookup(XFCE_RESOURCE_CONFIG, "xfce4/whiskermenu/defaults.rc"));
 	wm_settings->load(xfce_panel_plugin_lookup_rc_file(m_plugin));
 	m_opacity = wm_settings->menu_opacity;
+	m_profile_photo_size = wm_settings->profile_photo_size;
 
 	// Prevent empty panel button
 	if (!wm_settings->button_icon_visible)
@@ -540,6 +542,15 @@ void Plugin::show_menu(bool at_cursor)
 		}
 		m_opacity = wm_settings->menu_opacity;
 	}
+
+	if (wm_settings->profile_photo_size != m_profile_photo_size)
+	{
+		delete m_window;
+		m_window = new Window(this);
+		g_signal_connect_slot<GtkWidget*>(m_window->get_widget(), "unmap", &Plugin::menu_hidden, this);
+		m_opacity = wm_settings->menu_opacity;
+	}
+	
 	m_window->show(at_cursor ? Window::PositionAtCursor : Window::Position(xfce_panel_plugin_get_orientation(m_plugin)));
 }
 

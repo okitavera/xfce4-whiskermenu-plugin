@@ -67,6 +67,7 @@ private:
 	void toggle_display_recent(GtkToggleButton* button);
 
 	void background_opacity_changed(GtkRange* range);
+	void profile_photo_size_changed(GtkRange* range);
 
 	SearchAction* get_selected_action(GtkTreeIter* iter = NULL) const;
 	void action_selected(GtkTreeView* view);
@@ -98,10 +99,11 @@ private:
 	GtkWidget* m_position_categories_alternate;
 	GtkWidget* m_stay_on_focus_out;
 	GtkWidget* m_confirm_session_command;
-	GtkWidget* m_profile_layout_alternate;
 	GtkWidget* m_category_icon_size;
 	GtkWidget* m_item_icon_size;
 	GtkWidget* m_background_opacity;
+	GtkWidget* m_profile_layout_alternate;
+	GtkWidget* m_profile_photo_size;
 
 	GtkWidget* m_button_style;
 	GtkWidget* m_title;

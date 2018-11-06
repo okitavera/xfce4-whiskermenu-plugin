@@ -339,6 +339,14 @@ void ConfigurationDialog::background_opacity_changed(GtkRange* range)
 
 //-----------------------------------------------------------------------------
 
+void ConfigurationDialog::profile_photo_size_changed(GtkRange* range)
+{
+	wm_settings->profile_photo_size = gtk_range_get_value(range);
+	wm_settings->set_modified();
+}
+
+//-----------------------------------------------------------------------------
+
 SearchAction* ConfigurationDialog::get_selected_action(GtkTreeIter* iter) const
 {
 	GtkTreeIter selected_iter;
@@ -805,6 +813,18 @@ GtkWidget* ConfigurationDialog::init_behavior_tab()
 	gtk_grid_attach(profile_table, m_profile_layout_alternate, 0, 0, 2, 1);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(m_profile_layout_alternate), wm_settings->profile_layout_alternate);
 	g_signal_connect_slot(m_profile_layout_alternate, "toggled", &ConfigurationDialog::toggle_profile_layout_alternate, this);
+
+	// Add option to resize user image
+	GtkWidget* profile_size_label = gtk_label_new_with_mnemonic(_("Photo size: "));
+	gtk_widget_set_halign(profile_size_label, GTK_ALIGN_START);
+	gtk_grid_attach(profile_table, profile_size_label, 0, 1, 2, 1);
+
+	m_profile_photo_size = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, 16.0, 128.0, 1.0);
+	gtk_widget_set_hexpand(GTK_WIDGET(m_profile_photo_size), true);
+	gtk_grid_attach(profile_table, m_profile_photo_size, 1, 1, 2, 1);
+	gtk_scale_set_value_pos(GTK_SCALE(m_profile_photo_size), GTK_POS_RIGHT);
+	gtk_range_set_value(GTK_RANGE(m_profile_photo_size), wm_settings->profile_photo_size);
+	g_signal_connect_slot(m_profile_photo_size, "value-changed", &ConfigurationDialog::profile_photo_size_changed, this);
 
 	return GTK_WIDGET(page);
 }

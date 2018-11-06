@@ -110,6 +110,7 @@ public:
 	int menu_width;
 	int menu_height;
 	int menu_opacity;
+	int profile_photo_size;
 
 	friend class Plugin;
 };

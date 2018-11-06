@@ -84,6 +84,7 @@ private:
 
 	int m_opacity;
 	bool m_file_icon;
+	int m_profile_photo_size;
 };
 
 }

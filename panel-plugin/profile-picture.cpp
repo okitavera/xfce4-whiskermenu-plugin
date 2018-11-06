@@ -70,7 +70,8 @@ void ProfilePicture::on_file_changed(GFileMonitor*, GFile* file, GFile*, GFileMo
 	if (g_file_query_exists(file, NULL))
 	{
 		gchar* icon = g_file_get_path(file);
-		GdkPixbuf* iconbuf = gdk_pixbuf_new_from_file_at_size(icon, 64, 64, NULL);
+		int iconsize = wm_settings->profile_photo_size;
+		GdkPixbuf* iconbuf = gdk_pixbuf_new_from_file_at_size(icon, iconsize, iconsize, NULL);
 		gtk_image_set_from_pixbuf(GTK_IMAGE(m_image), iconbuf);
 		g_object_unref(iconbuf);
 	}
