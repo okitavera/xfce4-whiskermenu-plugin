@@ -150,6 +150,7 @@ private:
 	bool m_layout_search_alternate;
 	bool m_layout_commands_alternate;
 	bool m_supports_alpha;
+	bool m_profile_layout_alternate;
 };
 
 }
